@@ -25,3 +25,15 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    local = 'Hello from build.gradle'
+}
+
+task printProperties << {
+    println local
+    println propertiesFile
+    if (project.hasProperty('cmd')) {
+        println cmd
+    }
+}
