@@ -1,0 +1,14 @@
+String[] arrayStrings = ["one", "two", 'three'];
+def arrayInts = [1, 2, 3] as int[]
+
+task helloArray {
+
+    doLast {
+        println arrayStrings[0]
+        println arrayStrings[1]
+        println arrayStrings[-1]
+        // arrayStrings << 'four'   // Arrays 不支持 <<
+        println arrayStrings
+        println arrayInts
+    }
+}

@@ -1,0 +1,10 @@
+int version = 1
+Boolean isDebug = true
+def language = 'groovy'
+def message = "Hello from ${language + 1}, the result is ${isDebug}."
+
+task helloVariable {
+    doLast{
+        println message
+    }
+}

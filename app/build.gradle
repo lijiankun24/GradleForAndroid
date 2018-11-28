@@ -1,9 +1,10 @@
 println '/app/build.gradle start'
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply from: '../variable.gradle'
+apply from: '../list.gradle'
+apply from: '../array.gradle'
 
 android {
     compileSdkVersion 27

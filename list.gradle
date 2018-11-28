@@ -1,0 +1,17 @@
+ArrayList arrayList = ['arrayOne', 'arrayTwo', 'arrayThree']
+LinkedList linkedList = ['linkedOne', 'linkedTwo', 'linkedThree']
+List list = [1, 2, true]
+def listDef = ['one', 2, true]
+
+task helloList {
+    doLast {
+        println listDef
+        println arrayList
+        println linkedList
+        println list
+        println list[0]
+        println list[-1]
+        list << 4
+        println list[-1]
+    }
+}

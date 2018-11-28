@@ -22,10 +22,6 @@ allprojects {
     }
 }
 
-//defaultTasks 'clean', 'assembleDebug'
-//
-//defaultTasks('clean', 'assembleDebug')
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
