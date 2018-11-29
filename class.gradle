@@ -1,0 +1,22 @@
+class Student {
+    def name
+    def age
+    private String work
+    public String lover
+
+    def Student(String name) {
+        this.name = name
+    }
+}
+
+task helloClass {
+
+    doLast {
+        def student = new Student('lijiankun24')
+        println student.name
+        println student.getAge()
+        println student.lover
+        // println student.getLover()       // Student 中并没有 getLover() 这个方法
+        // println student.getWork()        // Student 中并没有 getWork() 这个方法
+    }
+}

@@ -1,0 +1,29 @@
+def maps = [red: '#FF0000', green: '#00FF00', blue: '#0000FF']
+def mapNums = [1: 'one', 2: 'two', 3: 'three', 100: 'four']
+
+def key = 'name'
+def mapKey = [key: 'value']
+def mapKey1 = [(key): 'value1']
+
+task helloMaps {
+
+    doLast {
+
+        println maps['red']
+        println maps.green
+        maps['pink'] = '#FF00FF'
+        maps.yello = '#FFFF00'
+        println maps['pink']
+        println maps.yello
+        println maps.white
+
+        println mapNums[1]
+        println mapNums[100]
+        println mapNums[5]
+
+        println mapKey['key']
+        println mapKey['name']
+
+        println mapKey1['name']
+    }
+}

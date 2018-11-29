@@ -5,6 +5,8 @@ apply plugin: 'kotlin-android-extensions'
 apply from: '../variable.gradle'
 apply from: '../list.gradle'
 apply from: '../array.gradle'
+apply from: '../maps.gradle'
+apply from: '../class.gradle'
 
 android {
     compileSdkVersion 27
