@@ -1,0 +1,46 @@
+def message = 'closure is good'
+
+def printMessage = {
+    println "The message is '${message}'"
+}
+
+Closure<Boolean> booleanClosure = {
+    return it == 'xiaoming'
+}
+
+def testClosure = {
+    println "I am a closure, the params is ${it}."
+}
+
+def testClosureParams = { name, int age ->
+    println "I am a closure, the params is ${name}."
+}
+
+def paramsClosure = { name, closure ->
+    if (closure(name)) {
+        println 'The input name is xiaoming'
+    } else {
+        println 'The input name is not xiaoming'
+    }
+}
+
+task helloClosure {
+    doLast {
+        printMessage()
+        println booleanClosure('xiaoming')
+        println booleanClosure('test')
+
+        testClosure 'xiaoming'
+        testClosure.call('xiaoming')
+        testClosure('xiaoming')
+
+        testClosureParams('xiaoming', 20)
+
+        paramsClosure('xiaoming', booleanClosure)
+        paramsClosure('test', booleanClosure)
+
+        paramsClosure('xiaoming', { name ->
+            name.toUpperCase() == 'XIAOMING'
+        })
+    }
+}

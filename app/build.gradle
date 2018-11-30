@@ -2,11 +2,13 @@ println '/app/build.gradle start'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply from: '../variable.gradle'
-apply from: '../list.gradle'
-apply from: '../array.gradle'
-apply from: '../maps.gradle'
-apply from: '../class.gradle'
+apply from: '../groovy/variable.gradle'
+apply from: '../groovy/list.gradle'
+apply from: '../groovy/array.gradle'
+apply from: '../groovy/maps.gradle'
+apply from: '../groovy/class.gradle'
+apply from: '../groovy/function.gradle'
+apply from: '../groovy/closure.gradle'
 
 android {
     compileSdkVersion 27

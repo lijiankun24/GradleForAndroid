@@ -1,0 +1,23 @@
+def message = 'message'
+
+def printMessage () {
+    println message
+}
+
+void printName(String name) {
+    println name
+}
+
+void printPerson(String name, age) {
+    println "The name is ${name} and the age is ${age}"
+}
+
+task helloFunction {
+    doLast {
+        println printName('xiaoming')
+
+        printPerson  'xiaoming', 20
+
+        // println printMessage() 会执行异常
+    }
+}
