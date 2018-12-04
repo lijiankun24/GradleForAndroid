@@ -1,3 +1,1 @@
-println "settings.gradle start"
-include ':app'
-println "settings.gradle end"
+include ':app', ':library'
