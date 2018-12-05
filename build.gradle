@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-println '/build.gradle start'
+println "/build.gradle 开始配置"
 buildscript {
+    println "/build.gradle buildscript 开始配置"
     ext.kotlin_version = '1.2.71'
     repositories {
         google()
@@ -13,13 +14,16 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+    println "/build.gradle buildscript 结束配置"
 }
 
 allprojects {
+    println "/build.gradle allprojects 开始配置"
     repositories {
         google()
         jcenter()
     }
+    println "/build.gradle allprojects 结束配置"
 }
 
 task clean(type: Delete) {
@@ -30,11 +34,17 @@ ext {
     local = 'Hello from build.gradle'
 }
 
-task printProperties << {
-    println local
-    println propertiesFile
-    if (project.hasProperty('cmd')) {
-        println cmd
+task printProperties {
+    println "/build.gradle task printProperties 开始配置"
+    println '/build.gradle task printProperties'
+    println "/build.gradle task printProperties 结束配置"
+    doLast {
+        println local
+        println propertiesFile
+        if (project.hasProperty('cmd')) {
+            println cmd
+        }
     }
 }
-println '/build.gradle end'
+
+println "/build.gradle 结束配置"
