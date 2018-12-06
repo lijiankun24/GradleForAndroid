@@ -8,6 +8,8 @@ apply from: '../groovy/maps.gradle'
 apply from: '../groovy/class.gradle'
 apply from: '../groovy/function.gradle'
 apply from: '../groovy/closure.gradle'
+apply from: '../groovy/tasks.gradle'
+apply from: '../groovy/taskDependenciesAndOrdering.gradle'
 
 android {
     compileSdkVersion 27
@@ -34,6 +36,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    signingConfigs {
+        release {
+            storeFile file("release.keystore")
+            storePassword "password"
+            keyAlias "ReleaseKey"
+            keyPassword "password"
+        }
+    }
+
 }
 
 dependencies {
@@ -44,4 +55,24 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+tasks.whenTaskAdded { theTask ->
+    if (theTask.name == "packageRelease") {
+        theTask.dependsOn(getReleasePassword)
+    }
+}
+task getReleasePassword {
+    def password = ''
+    File file = getRootProject().file('private.properties')
+    if (file.exists()) {
+        Properties properties = new Properties()
+        properties.load(file.newDataInputStream())
+        password = properties.getProperty('release.password')
+    }
+    if (!password?.trim()) {
+        password = new String(System.console().readPassword("\nWhat's the secret password?"))
+    }
+    android.signingConfigs.release.storePassword = password
+    android.signingConfigs.release.keyPassword = password
 }

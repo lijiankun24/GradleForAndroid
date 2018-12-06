@@ -1,0 +1,21 @@
+task helloTaskA {
+    doFirst {
+        println 'helloTaskA doFirst'
+    }
+}
+
+task helloTaskB {
+    doFirst {
+        println 'helloTaskB doFirst'
+    }
+}
+
+helloTaskB.dependsOn(helloTaskA)
+
+task helloTaskC {
+    doFirst {
+        println 'helloTaskC doFirst'
+    }
+}
+
+helloTaskC.mustRunAfter(helloTaskA)

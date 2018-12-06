@@ -1,0 +1,44 @@
+getTasks().create('helloTask') {
+    doLast {
+        println 'create Task by TaskContainer'
+    }
+}
+
+task helloTask1 {
+    doLast {
+        println 'create Task by task(String name)'
+    }
+}
+
+class HelloTask extends DefaultTask {
+    def message = 'create Task by extends DefaultTask'
+
+    @TaskAction
+    def hello() {
+        println message
+    }
+}
+
+task helloTask2(type: HelloTask) {
+    doFirst {
+        println 'helloTask2 doFirst'
+    }
+
+    doLast {
+        println 'helloTask2 doLast'
+    }
+}
+
+def taskDef = task helloTask3(type: HelloTask)
+taskDef.doFirst(new Action<Task>() {
+    @Override
+    void execute(Task task) {
+        println 'helloTask3 Action execute doFirst'
+    }
+})
+taskDef.doLast(new Action<Task>() {
+    @Override
+    void execute(Task task) {
+        println 'helloTask3 Action execute doLast'
+    }
+})
