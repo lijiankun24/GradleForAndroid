@@ -11,6 +11,8 @@ apply from: '../groovy/closure.gradle'
 apply from: '../groovy/tasks.gradle'
 apply from: '../groovy/taskDependenciesAndOrdering.gradle'
 
+import groovy.swing.SwingBuilder
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -57,22 +59,81 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
-tasks.whenTaskAdded { theTask ->
-    if (theTask.name == "packageRelease") {
-        theTask.dependsOn(getReleasePassword)
+gradle.taskGraph.whenReady { taskGraph ->
+    if(taskGraph.hasTask(':app:assembleRelease')) {
+        def storePass = ''
+        def keyPass = ''
+        if(System.console() == null) {
+            System.setProperty('java.awt.headless', 'false')
+            new SwingBuilder().edt {
+                dialog(modal: true, title: 'Enter password', alwaysOnTop: true, resizable: false, locationRelativeTo: null, pack: true, show: true) {
+                    vbox { // Put everything below each other
+                        label(text: "Please enter store passphrase:")
+                        def input1 = passwordField()
+                        label(text: "Please enter key passphrase:")
+                        def input2 = passwordField()
+                        button(defaultButton: true, text: 'OK', actionPerformed: {
+                            storePass = input1.password;
+                            keyPass = input2.password;
+                            dispose();
+                        })
+                    }
+                }
+            }
+        } else {
+            storePass = System.console().readPassword("\nPlease enter store passphrase: ")
+            keyPass = System.console().readPassword("\nPlease enter key passphrase: ")
+        }
+
+        if(storePass.size() <= 0 || keyPass.size() <= 0) {
+            throw new InvalidUserDataException("You must enter the passwords to proceed.")
+        }
+
+        storePass = new String(storePass)
+        keyPass = new String(keyPass)
+
+        android.signingConfigs.release.storePassword = storePass
+        android.signingConfigs.release.keyPassword = keyPass
     }
 }
-task getReleasePassword {
-    def password = ''
-    File file = getRootProject().file('private.properties')
-    if (file.exists()) {
-        Properties properties = new Properties()
-        properties.load(file.newDataInputStream())
-        password = properties.getProperty('release.password')
-    }
-    if (!password?.trim()) {
-        password = new String(System.console().readPassword("\nWhat's the secret password?"))
-    }
-    android.signingConfigs.release.storePassword = password
-    android.signingConfigs.release.keyPassword = password
-}
+
+//tasks.whenTaskAdded { theTask ->
+//    if (theTask.name == "packageRelease") {
+//        theTask.dependsOn(getReleasePassword)
+//    }
+//}
+//task getReleasePassword {
+//    def storePass = ''
+//    def keyPass = ''
+//    if(System.console() == null) {
+//        System.setProperty('java.awt.headless', 'false')
+//        new SwingBuilder().edt {
+//            dialog(modal: true, title: 'Enter password', alwaysOnTop: true, resizable: false, locationRelativeTo: null, pack: true, show: true) {
+//                vbox { // Put everything below each other
+//                    label(text: "Please enter store passphrase:")
+//                    def input1 = passwordField()
+//                    label(text: "Please enter key passphrase:")
+//                    def input2 = passwordField()
+//                    button(defaultButton: true, text: 'OK', actionPerformed: {
+//                        storePass = input1.password;
+//                        keyPass = input2.password;
+//                        dispose();
+//                    })
+//                }
+//            }
+//        }
+//    } else {
+//        storePass = System.console().readPassword("\nPlease enter store passphrase: ")
+//        keyPass = System.console().readPassword("\nPlease enter key passphrase: ")
+//    }
+//
+//    if(storePass.size() <= 0 || keyPass.size() <= 0) {
+//        throw new InvalidUserDataException("You must enter the passwords to proceed.")
+//    }
+//
+//    storePass = new String(storePass)
+//    keyPass = new String(keyPass)
+//
+//    android.signingConfigs.release.storePassword = storePass
+//    android.signingConfigs.release.keyPassword = keyPass
+//}
