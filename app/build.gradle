@@ -28,6 +28,7 @@ android {
             buildConfigField "boolean", "debuggable", "true"
         }
         staging {
+            initWith debug
             buildConfigField 'boolean', 'debuggable', 'false'
             versionNameSuffix '-staging'
             applicationIdSuffix '.staging'
@@ -60,10 +61,10 @@ dependencies {
 }
 
 gradle.taskGraph.whenReady { taskGraph ->
-    if(taskGraph.hasTask(':app:assembleRelease')) {
+    if (taskGraph.hasTask(':app:assembleRelease')) {
         def storePass = ''
         def keyPass = ''
-        if(System.console() == null) {
+        if (System.console() == null) {
             System.setProperty('java.awt.headless', 'false')
             new SwingBuilder().edt {
                 dialog(modal: true, title: 'Enter password', alwaysOnTop: true, resizable: false, locationRelativeTo: null, pack: true, show: true) {
@@ -85,7 +86,7 @@ gradle.taskGraph.whenReady { taskGraph ->
             keyPass = System.console().readPassword("\nPlease enter key passphrase: ")
         }
 
-        if(storePass.size() <= 0 || keyPass.size() <= 0) {
+        if (storePass.size() <= 0 || keyPass.size() <= 0) {
             throw new InvalidUserDataException("You must enter the passwords to proceed.")
         }
 
